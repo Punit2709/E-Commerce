@@ -6,7 +6,6 @@ const connectDatabse = () => {
     .then((data) =>
       console.log(`Mongo DB Connected with ${data.connection.host}`)
     )
-    .catch((error) => console.log(error));
 };
 
 module.exports = connectDatabse;

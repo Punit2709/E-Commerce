@@ -56,5 +56,5 @@ exports.getProductDetails = catchAsyncError(async (req, res, next) => {
 
   res
     .status(200)
-    .json({ success: true, message: "Product Details Fetched", product });
+    .json({ success: true, message: "Product Details Fetched", product});
 });
