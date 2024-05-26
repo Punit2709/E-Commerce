@@ -1,4 +1,4 @@
-const mongoose = require('mongooes');
+const mongoose = require('mongoose');
 
 const ProductSchema = mongoose.Schema({
     name: {
@@ -37,7 +37,7 @@ const ProductSchema = mongoose.Schema({
     stock:{
         type: Number, 
         required: [true, 'Product category is required'],
-        maxLength: 3, 
+        max: 999, 
         default: 1,
     }, 
     numOfReviews:{
@@ -69,6 +69,6 @@ const ProductSchema = mongoose.Schema({
         type: Date, 
         default: Date.now
     }
-},{ timeStamp: true});
+},{ timestamps: true });
 
 module.exports = mongoose.model("Product", ProductSchema)
