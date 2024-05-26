@@ -5,6 +5,7 @@ const connectDatabse = require('./config/database');
 process.on("uncaughtException", (err) => {
     console.log(`Error : ${err.message}`);
     console.log(`Shut down Server Due to Uncaught Exception`);
+    process.exit(1);
 });
 
 
