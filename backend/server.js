@@ -1,5 +1,12 @@
 const app = require('./app');
 const connectDatabse = require('./config/database');
+ 
+// handling uncaughtException
+process.on("uncaughtException", (err) => {
+    console.log(`Error : ${err.message}`);
+    console.log(`Shut down Server Due to Uncaught Exception`);
+});
+
 
 // config setting
 const dotenv = require('dotenv');
