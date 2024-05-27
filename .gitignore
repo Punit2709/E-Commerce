@@ -1,2 +1,5 @@
-node_modules
+# Ignore node_modules folder
+node_modules/
+
+# Ignore specific environment config file
 backend/config/config.env
