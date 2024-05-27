@@ -14,7 +14,7 @@ const dotenv = require('dotenv');
 dotenv.config({path: 'backend/config/config.env'});
 
 const PORT = process.env.PORT;
-connectDatabse();
+connectDatabase();
 
 const server = app.listen(PORT, () =>{
     console.log(`Server is running on PORT : ${PORT}`);
