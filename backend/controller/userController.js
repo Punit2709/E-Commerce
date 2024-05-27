@@ -15,5 +15,7 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
     },
   });
 
-  res.status(200).json({ sucess: true, message: "User created", user });
+  const token = user.getJWTToken();
+
+  res.status(200).json({ sucess: true, message: "User created", token });
 });
