@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
+const bcrypt = require('bcryptjs');
 
 const userSchema = new mongoose.Schema({
     name:{
@@ -37,6 +38,17 @@ const userSchema = new mongoose.Schema({
     resetPasswordToken: String, 
     resetPasswordExpire: Date,
 });
+
+userSchema.pre('save', async function(next){   
+    // no need to hash for update profile because already hased passwod is saved
+    if(!this.isModified("password")){
+        next();
+    }
+    
+    this.password = await bcrypt.hash(this.password, 10);
+})
+
+
 
 const userModel = mongoose.model('users', userSchema);
 module.exports = userModel;
