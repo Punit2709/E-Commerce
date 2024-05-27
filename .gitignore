@@ -2,4 +2,4 @@
 node_modules/
 
 # Ignore specific environment config file
-/backend/config/config.env
+backend/config/config.env
