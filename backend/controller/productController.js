@@ -43,11 +43,8 @@ exports.deleteProduct = catchAsyncError(async (req, res, next) => {
 
 // get products
 exports.getAllProducts = catchAsyncError(async (req, res) => {
-  console.log(req.query);
-  
-  const apiFeature = new ApiFeatures(Product.find(), req.query).search();
 
-  console.log(apiFeature);
+  const apiFeature = new ApiFeatures(Product.find(), req.query).filter();
   const products = await apiFeature.query;
   res.status(200).json({ message: "Product Created", success: true, products });
 });
