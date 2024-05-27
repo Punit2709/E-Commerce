@@ -20,7 +20,7 @@ const userSchema = new mongoose.Schema({
     type: String,
     required: [true, "Please Enter Password"],
     minLength: [8, "Password Should have Atleast than 8 char"],
-    select: false,
+    select: false, // not give password directly
   },
   avatar: {
     public_id: {
@@ -55,6 +55,12 @@ userSchema.methods.getJWTToken = function () {
     expiresIn: process.env.JWT_EXPIRE,
   });
 };
+
+// compare password
+
+userSchema.methods.comparePassword = async function(enteredPassword){
+    return await bcrypt.compare(enteredPassword, this.password);
+}
 
 const userModel = mongoose.model("users", userSchema);
 module.exports = userModel;
