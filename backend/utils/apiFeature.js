@@ -22,10 +22,14 @@ class ApiFeatures {
 
         // not wanted fields
         const removeFields = ["keyword", "page", "limit"];
-
         removeFields.forEach(key => delete queryStrCopy[key]);
 
-        this.query = this.query.find({...queryStrCopy})
+        // filter for Price
+        let queryPrice = JSON.stringify(queryStrCopy);
+        queryPrice =  queryPrice.replace(/\b(gt|gte|lt|lte)\b/g, key => `$${key}`)
+
+
+        this.query = this.query.find(JSON.parse(queryPrice))
         return this;
     }
 }
