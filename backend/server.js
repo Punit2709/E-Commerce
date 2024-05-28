@@ -1,5 +1,5 @@
 const app = require('./app');
-const connectDatabse = require('./config/database');
+const connectDatabase = require('./config/database');
  
 // handling uncaughtException
 process.on("uncaughtException", (err) => {
