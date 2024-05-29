@@ -143,3 +143,29 @@ exports.getUserDetails = catchAsyncError( async (req, res, next) => {
     user
   })
 });
+
+
+// update Password 
+exports.updateUserPassword = catchAsyncError( async (req, res, next) => {
+
+  const user = await userModel.findById(req.user._id).select('+password');
+
+  const isPasswordMatched = await user.comparePassword(req.body.oldPassword);
+  
+  if(!isPasswordMatched){
+    return next(new ErrorHandler(400, 'Invalid Old Password'));
+  }
+
+  if(req.body.newPassword !== req.body.confirmPassword){
+    return next(new ErrorHandler(404, 'Password Does not matched'));
+  }
+
+  if(req.body.newPassword === req.body.oldPassword){
+    return next(new ErrorHandler(404, 'New Password is same as Old Password'));
+  }
+
+  user.password = req.body.newPassword;
+  await user.save();
+
+  sendJWTToken(user, 200, 'Password Changed Successfully', res);
+})
