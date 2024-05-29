@@ -189,3 +189,27 @@ exports.updateUserProfile = catchAsyncError( async (req, res, next) => {
     message: 'User Data Update Successfully'
   })
 });
+
+// get all user (admin)
+exports.getAllUsers = catchAsyncError( async (req, res, next) => {
+  const users = await userModel.find();
+
+  res.status(200).json({
+    success: true,
+    message: 'get all users', 
+    users
+  })
+});
+
+// get single user (admin)
+exports.getSingleUser = catchAsyncError( async (req, res, next) => {
+  const user = await userModel.findById(req.params.id);
+  if(!user){
+    return next(new ErrorHandler(400, 'User Not Found'));
+  }
+
+  res.status(200).json({
+    success: true,
+    user
+  })
+})
