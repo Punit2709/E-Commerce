@@ -108,108 +108,143 @@ exports.forgotPassword = catchAsyncError(async (req, res, next) => {
 
 // reset password
 exports.resetPassword = catchAsyncError(async (req, res, next) => {
-
   const resetPasswordToken = crypto
     .createHash("sha256")
     .update(req.params.token)
     .digest("hex");
 
-    const user = await userModel.findOne({resetPasswordToken, resetPasswordExpire : {$gt : Date.now()}});
+  const user = await userModel.findOne({
+    resetPasswordToken,
+    resetPasswordExpire: { $gt: Date.now() },
+  });
 
-    if(!user){
-      return next(new ErrorHandler(401, "Invalid Email or Password"));
-    }
+  if (!user) {
+    return next(new ErrorHandler(401, "Invalid Email or Password"));
+  }
 
-    if(req.body.password !== req.body.confirmPassword){
-      return next(new ErrorHandler(400, "Password does not matched"));
-    }
+  if (req.body.password !== req.body.confirmPassword) {
+    return next(new ErrorHandler(400, "Password does not matched"));
+  }
 
-    user.password = req.body.password;
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpire = undefined;
+  user.password = req.body.password;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpire = undefined;
 
-    await user.save();
-    
-    sendJWTToken(user, 200, 'Password reset successfully', res)
+  await user.save();
+
+  sendJWTToken(user, 200, "Password reset successfully", res);
 });
 
-
 // user details
-exports.getUserDetails = catchAsyncError( async (req, res, next) => {
+exports.getUserDetails = catchAsyncError(async (req, res, next) => {
   const user = await userModel.findById(req.user._id);
 
   res.status(200).json({
-    status:200,
-    user
-  })
+    status: 200,
+    user,
+  });
 });
 
-
-// update Password 
-exports.updateUserPassword = catchAsyncError( async (req, res, next) => {
-
-  const user = await userModel.findById(req.user._id).select('+password');
+// update Password
+exports.updateUserPassword = catchAsyncError(async (req, res, next) => {
+  const user = await userModel.findById(req.user._id).select("+password");
 
   const isPasswordMatched = await user.comparePassword(req.body.oldPassword);
-  
-  if(!isPasswordMatched){
-    return next(new ErrorHandler(400, 'Invalid Old Password'));
+
+  if (!isPasswordMatched) {
+    return next(new ErrorHandler(400, "Invalid Old Password"));
   }
 
-  if(req.body.newPassword !== req.body.confirmPassword){
-    return next(new ErrorHandler(404, 'Password Does not matched'));
+  if (req.body.newPassword !== req.body.confirmPassword) {
+    return next(new ErrorHandler(404, "Password Does not matched"));
   }
 
-  if(req.body.newPassword === req.body.oldPassword){
-    return next(new ErrorHandler(404, 'New Password is same as Old Password'));
+  if (req.body.newPassword === req.body.oldPassword) {
+    return next(new ErrorHandler(404, "New Password is same as Old Password"));
   }
 
   user.password = req.body.newPassword;
   await user.save();
 
-  sendJWTToken(user, 200, 'Password Changed Successfully', res);
+  sendJWTToken(user, 200, "Password Changed Successfully", res);
 });
 
 // update profile
-exports.updateUserProfile = catchAsyncError( async (req, res, next) => {
-
+exports.updateUserProfile = catchAsyncError(async (req, res, next) => {
   const newData = {
-    name : req.body.name, 
-    email: req.body.email
-  }
+    name: req.body.name,
+    email: req.body.email,
+  };
 
   const user = await userModel.findByIdAndUpdate(req.user.id, newData, {
     new: true,
     runValidators: true,
-    useFindAndModify: false
-  })
+    useFindAndModify: false,
+  });
 
   res.status(200).json({
     success: true,
-    message: 'User Data Update Successfully'
-  })
+    message: "User Data Update Successfully",
+  });
 });
 
 // get all user (admin)
-exports.getAllUsers = catchAsyncError( async (req, res, next) => {
+exports.getAllUsers = catchAsyncError(async (req, res, next) => {
   const users = await userModel.find();
 
   res.status(200).json({
     success: true,
-    message: 'get all users', 
-    users
-  })
+    message: "get all users",
+    users,
+  });
 });
 
 // get single user (admin)
-exports.getSingleUser = catchAsyncError( async (req, res, next) => {
+exports.getSingleUser = catchAsyncError(async (req, res, next) => {
   const user = await userModel.findById(req.params.id);
-  if(!user){
-    return next(new ErrorHandler(400, 'User Not Found'));
+  if (!user) {
+    return next(new ErrorHandler(400, "User Not Found"));
   }
 
   res.status(200).json({
     success: true,
-    user
-  })
-})
+    user,
+  });
+});
+
+// update user role by -- Admin
+exports.updateUserRole = catchAsyncError(async (req, res, next) => {
+  const newData = {
+    name: req.body.name,
+    email: req.body.email,
+    role: req.body.role,
+  };
+
+  const user = await userModel.findByIdAndUpdate(req.params.id, newData, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false,
+  });
+
+  if (!user) {
+    return next(new ErrorHandler(400, "User Not Found"));
+  }
+
+  res.status(200).json({
+    success: true,
+    message: "User Data Update Successfully",
+  });
+});
+
+// delete user by -- Admin
+exports.deleteUser = catchAsyncError(async (req, res, next) => {
+  const user = await userModel.findByIdAndDelete(req.params.id);
+  if (!user) {
+    return next(new ErrorHandler(400, "User Not Found"));
+  }
+
+  res.status(200).json({
+    success: true,
+    user,
+  });
+});
