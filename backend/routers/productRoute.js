@@ -4,10 +4,10 @@ const { isAuthenticatedUser, authorizeRoles } = require('../middleware/authentic
 
 const router = express.Router();
 
-router.route('/products').get(getAllProducts);
-router.route('/products/create').post( isAuthenticatedUser, authorizeRoles('admin'),  createProduct);
-router.route('/products/update/:id').put( isAuthenticatedUser, authorizeRoles('admin'), updateProduct);
-router.route('/products/delete/:id').delete( isAuthenticatedUser, authorizeRoles('admin'), deleteProduct);
+router.route('/admin/products').get(getAllProducts);
+router.route('/admin/products/create').post( isAuthenticatedUser, authorizeRoles('admin'),  createProduct);
+router.route('/admin/products/update/:id').put( isAuthenticatedUser, authorizeRoles('admin'), updateProduct);
+router.route('/admin/products/delete/:id').delete( isAuthenticatedUser, authorizeRoles('admin'), deleteProduct);
 router.route('/products/details/:id').get(getProductDetails);
 
 module.exports = router;
