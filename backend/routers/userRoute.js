@@ -1,6 +1,6 @@
 const express = require('express');
 const {isAuthenticatedUser} = require('../middleware/authentication')
-const { registerUser, loginUser, logoutUser, forgotPassword, resetPassword, getUserDetails, updateUserPassword } = require('../controller/userController');
+const { registerUser, loginUser, logoutUser, forgotPassword, resetPassword, getUserDetails, updateUserPassword, updateUserProfile } = require('../controller/userController');
 
 const router = express.Router();
 
@@ -12,7 +12,7 @@ router.route('/password/update').put(isAuthenticatedUser, updateUserPassword);
 router.route('/password/reset/:token').put(resetPassword);
 
 router.route('/me').get(isAuthenticatedUser, getUserDetails);
-
+router.route('/me/update').put(isAuthenticatedUser, updateUserProfile);
 
 router.route('/logout').get(logoutUser);
 

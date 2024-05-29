@@ -168,4 +168,24 @@ exports.updateUserPassword = catchAsyncError( async (req, res, next) => {
   await user.save();
 
   sendJWTToken(user, 200, 'Password Changed Successfully', res);
-})
+});
+
+// update profile
+exports.updateUserProfile = catchAsyncError( async (req, res, next) => {
+
+  const newData = {
+    name : req.body.name, 
+    email: req.body.email
+  }
+
+  const user = await userModel.findByIdAndUpdate(req.user.id, newData, {
+    new: true,
+    runValidators: true,
+    useFindAndModify: false
+  })
+
+  res.status(200).json({
+    success: true,
+    message: 'User Data Update Successfully'
+  })
+});
