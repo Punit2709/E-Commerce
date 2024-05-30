@@ -7,6 +7,9 @@ const product = require('./routers/productRoute');
 // user router
 const user = require('./routers/userRoute');
 
+// order router
+const order = require('./routers/orderRoute');
+
 // Error middleware
 const errorMiddleware = require('./middleware/error');
 
@@ -16,6 +19,7 @@ app.use(cookieParser());
 
 app.use('/api/v1', product);
 app.use('/api/v1', user);
+app.use('/api/v1', order);
 
 app.use(errorMiddleware);
 module.exports = app;
