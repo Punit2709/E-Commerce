@@ -34,5 +34,30 @@ exports.createOrder = catchAsyncError(async (req, res, next) => {
   })
 });
 
+exports.getSingleOrders = catchAsyncError( async (req, res, next) => {
+    const order = await Order.findById(req.params.id).populate('user', 'name email');
+
+    if(!order){
+        return next(new ErrorHandler(404, 'Order not Found'));
+    }
+
+    res.status(200).json({
+        success: true,
+        order
+    })
+})
 
 
+// get Loogin User Orders
+exports.myOrders = catchAsyncError( async (req, res, next) => {
+    const orders = await Order.find({user: req.user._id});
+
+    if(!orders){
+        return next(new ErrorHandler(404, 'Noo Order Found'))
+    }
+
+    res.status(200).json({
+        success: true,
+        orders
+    });
+})
