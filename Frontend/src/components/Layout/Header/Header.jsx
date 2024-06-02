@@ -1,5 +1,5 @@
 import React from 'react';
-import {Link}  from 'react-router-dom'
+import {NavLink}  from 'react-router-dom'
 import './Header.css';
 import logo from '../../../images/logo.png';
 import profileIcon from '../../../images/Profile.png';
@@ -15,10 +15,10 @@ const Header = () => {
                 </div>
                 <nav>
                     <ul className="nav-links">
-                        <li><Link to="/">Home</Link></li>
-                        <li><Link to="/about">About</Link></li>
-                        <li><Link to="/contact">Contact</Link></li>
-                        <li><Link to="/products">Products</Link></li>
+                        <li><NavLink to="/">Home</NavLink></li>
+                        <li><NavLink to="/about">About</NavLink></li>
+                        <li><NavLink to="/contact">Contact</NavLink></li>
+                        <li><NavLink to="/products">Products</NavLink></li>
                     </ul>
                 </nav>
                 <div className="search-profile-cart">
@@ -26,8 +26,8 @@ const Header = () => {
                         <input type="text" placeholder="Search..." className="search-bar" />
                         <img src={searchIcon} alt="Search" className="search-icon" />
                     </div>
-                    <Link to="#"><img src={profileIcon} alt="Profile" /></Link>
-                    <Link to="#"><img src={cartIcon} alt="Cart" /></Link>
+                    <NavLink to="#"><img src={profileIcon} alt="Profile" /></NavLink>
+                    <NavLink to="#"><img src={cartIcon} alt="Cart" /></NavLink>
                 </div>
             </div>
         </header>
