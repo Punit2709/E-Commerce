@@ -15,10 +15,10 @@ const Header = () => {
                 </div>
                 <nav>
                     <ul className="nav-links">
-                        <li><Link to="#">Home</Link></li>
-                        <li><Link to="#">About</Link></li>
-                        <li><Link to="#">Contact</Link></li>
-                        <li><Link to="#">Products</Link></li>
+                        <li><Link to="/">Home</Link></li>
+                        <li><Link to="/about">About</Link></li>
+                        <li><Link to="/contact">Contact</Link></li>
+                        <li><Link to="/products">Products</Link></li>
                     </ul>
                 </nav>
                 <div className="search-profile-cart">

@@ -23,8 +23,8 @@ const Footer = () => {
 
       <div className="rightFooter">
         <h4>Follow Us</h4>
-        <Link to="http://instagram.com/punitp_2.703">Instagram </Link>
-        <Link to="http://x.com/Punit2709">Twitter </Link>
+        <Link to="http://instagram.com/punitp_2.703" target="_blank">Instagram </Link>
+        <Link to="http://x.com/Punit2709" target="_blank">Twitter </Link>
       </div>
     </footer>
   );
