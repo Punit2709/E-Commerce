@@ -45,9 +45,9 @@ exports.deleteProduct = catchAsyncError(async (req, res, next) => {
 });
 
 // get products
-exports.getAllProducts = catchAsyncError(async (req, res) => {
-  const resultPerPage = 5;
-  let productCount = await Product.countDocuments();
+exports.getAllProducts = catchAsyncError(async (req, res, next) => {
+  const resultPerPage = 8;
+  let productsCount = await Product.countDocuments();
 
   const apiFeature = new ApiFeatures(Product.find(), req.query)
     .search()
@@ -58,9 +58,8 @@ exports.getAllProducts = catchAsyncError(async (req, res) => {
   res
     .status(200)
     .json({
-      message: "Product Created",
       success: true,
-      productCount,
+      productsCount,
       products,
     });
 });
