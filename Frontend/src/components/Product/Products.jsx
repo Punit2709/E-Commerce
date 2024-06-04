@@ -9,18 +9,19 @@ import Pagination from "react-js-pagination";
 import Slider from "@material-ui/core/Slider";
 import Typography from "@material-ui/core/Typography";
 import MetaData from "../Layout/MetaData";
+import { useAlert } from "react-alert";
 
 const categories = [
-    "Laptop",
-    "Footwear",
-    "Bottom",
-    "Tops",
-    "Attire",
-    "Camera",
-    "Phone",
-    "Bag", 
-    "Makeup", 
-    "Game"
+  "Laptop",
+  "Footwear",
+  "Bottom",
+  "Tops",
+  "Attire",
+  "Camera",
+  "Phone",
+  "Bag",
+  "Makeup",
+  "Game",
 ];
 
 function Products() {
@@ -30,10 +31,18 @@ function Products() {
   const [currentPage, setCurrentPage] = useState(1);
   const [price, setPrice] = useState([0, 250000]);
   const [category, setCategory] = useState(null);
+  const [rating, setRating] = useState(0);
 
-  const { loading, products, error, productsCount, resultPerPage, fillteredProductsCount } = useSelector(
-    (state) => state.products
-  );
+  const alert = useAlert();
+
+  const {
+    loading,
+    products,
+    error,
+    productsCount,
+    resultPerPage,
+    fillteredProductsCount,
+  } = useSelector((state) => state.products);
 
   const setCurrentPageNo = (e) => {
     setCurrentPage(e);
@@ -44,8 +53,13 @@ function Products() {
   };
 
   useEffect(() => {
-    dispath(getProduct(keyword, currentPage, price, category));
-  }, [dispath, keyword, currentPage, price, category, error]);
+    if(error){
+      alert.error(error);
+      dispath(clearErrors());
+    }
+
+    dispath(getProduct(keyword, currentPage, price, category, rating));
+  }, [dispath, keyword, currentPage, price, category, rating, error]);
 
   return (
     <Fragment>
@@ -53,7 +67,10 @@ function Products() {
         <Loader />
       ) : (
         <Fragment>
-          <h2 className="productsHeading">{ keyword ? `${keyword}` : 'Products'}</h2>
+          <MetaData title='Products -- E-Commerce'/>
+          <h2 className="productsHeading">
+            {keyword ? `${keyword}` : "Products"}
+          </h2>
           <div className="products">
             {products &&
               products.map((product) => (
@@ -85,42 +102,39 @@ function Products() {
               ))}
             </ul>
 
-            {/* <fieldset>
+            <fieldset>
               <Typography component="legend">Ratings Above</Typography>
               <Slider
-                value={ratings}
+                value={rating}
                 onChange={(e, newRating) => {
-                  setRatings(newRating);
+                  setRating(newRating);
                 }}
                 aria-labelledby="continuous-slider"
                 valueLabelDisplay="auto"
                 min={0}
                 max={5}
               />
-            </fieldset> */}
+            </fieldset>
           </div>
 
-          {
-            resultPerPage < fillteredProductsCount && (
-                <div className="paginationBox">
-                <Pagination
-                  activePage={currentPage}
-                  itemsCountPerPage={resultPerPage}
-                  totalItemsCount={productsCount}
-                  onChange={setCurrentPageNo}
-                  nextPageText="Next"
-                  prevPageText="Prev"
-                  firstPageText="1st"
-                  lastPageText="Last"
-                  itemClass="page-item"
-                  linkClass="page-link"
-                  activeClass="pageItemActive"
-                  activeLinkClass="pageLinkActive"
-                />
+          {resultPerPage < fillteredProductsCount && (
+            <div className="paginationBox">
+              <Pagination
+                activePage={currentPage}
+                itemsCountPerPage={resultPerPage}
+                totalItemsCount={productsCount}
+                onChange={setCurrentPageNo}
+                nextPageText="Next"
+                prevPageText="Prev"
+                firstPageText="1st"
+                lastPageText="Last"
+                itemClass="page-item"
+                linkClass="page-link"
+                activeClass="pageItemActive"
+                activeLinkClass="pageLinkActive"
+              />
             </div>
-            )
-          }  
-
+          )}
         </Fragment>
       )}
     </Fragment>

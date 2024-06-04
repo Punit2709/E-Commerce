@@ -28,7 +28,7 @@ const Header = () => {
                     </div> */}
                     
                     <NavLink to="/search"><img src={searchIcon} alt="Search" /></NavLink>
-                    <NavLink to="/profile"><img src={profileIcon} alt="Profile" /></NavLink>
+                    <NavLink to="/login"><img src={profileIcon} alt="Profile" /></NavLink>
                     <NavLink to="/cart"><img src={cartIcon} alt="Cart" /></NavLink>
                 </div>
             </div>
