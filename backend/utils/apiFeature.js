@@ -38,6 +38,7 @@ class ApiFeatures {
     let skip = resultPerPage * (currentPage - 1);
 
     this.query = this.query.limit(resultPerPage).skip(skip);
+    // console.log('I m Skip'+ skip);
     return this;
   }
 }
