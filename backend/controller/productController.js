@@ -60,6 +60,7 @@ exports.getAllProducts = catchAsyncError(async (req, res, next) => {
     .json({
       success: true,
       productsCount,
+      resultPerPage,
       products,
     });
 });
@@ -74,7 +75,7 @@ exports.getProductDetails = catchAsyncError(async (req, res, next) => {
 
   res
     .status(200)
-    .json({ success: true, message: "Product Details Fetched", product });
+    .json({ success: true, product });
 });
 
 // create and update review

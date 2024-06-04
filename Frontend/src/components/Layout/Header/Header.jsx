@@ -22,12 +22,14 @@ const Header = () => {
                     </ul>
                 </nav>
                 <div className="search-profile-cart">
-                    <div className="search-container">
+                    {/* <div className="search-container">
                         <input type="text" placeholder="Search..." className="search-bar" />
                         <img src={searchIcon} alt="Search" className="search-icon" />
-                    </div>
-                    <NavLink to="#"><img src={profileIcon} alt="Profile" /></NavLink>
-                    <NavLink to="#"><img src={cartIcon} alt="Cart" /></NavLink>
+                    </div> */}
+                    
+                    <NavLink to="/search"><img src={searchIcon} alt="Search" /></NavLink>
+                    <NavLink to="/profile"><img src={profileIcon} alt="Profile" /></NavLink>
+                    <NavLink to="/cart"><img src={cartIcon} alt="Cart" /></NavLink>
                 </div>
             </div>
         </header>
