@@ -4,17 +4,32 @@ const catchAsyncError = require("../middleware/catchAsyncError");
 const sendJWTToken = require("../utils/sendJWTToken");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
+const cloudinary = require("cloudinary");
 
 // register a user
 exports.registerUser = catchAsyncError(async (req, res, next) => {
+
+  // console.log('hello');
+
+  const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+    folder: "avatars",
+    width: 150,
+    crop: "scale",
+  });
+
+  if(!myCloud){
+    return next(new ErrorHandler(500, 'Cloud Not Supported'));
+  }
+
+  // console.log('hello 2');
   const { name, email, password } = req.body;
   const user = await userModel.create({
     name,
     email,
     password,
     avatar: {
-      public_id: "Profile_id",
-      url: "Profile URL",
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
     },
   });
 
@@ -32,13 +47,14 @@ exports.loginUser = catchAsyncError(async (req, res, next) => {
 
   // check for user exsist or not
   const user = await userModel.findOne({ email }).select("+password"); // provide password also
-
   if (!user) {
+    console.log(user);
+    console.log('check 2')
     return next(new ErrorHandler(401, "Invalid Email or Password"));
   }
 
   // user mill gaya password match karte hai
-  let isPasswordMatched = user.comparePassword();
+  let isPasswordMatched = await user.comparePassword(password);
 
   // if password not matched
   if (!isPasswordMatched) {
