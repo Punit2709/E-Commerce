@@ -9,19 +9,16 @@ const cloudinary = require("cloudinary");
 // register a user
 exports.registerUser = catchAsyncError(async (req, res, next) => {
 
-  // console.log('hello');
+  // const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+  //   folder: "avatars",
+  //   width: 150,
+  //   crop: "scale",
+  // });
 
-  const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
-    folder: "avatars",
-    width: 150,
-    crop: "scale",
-  });
+  // if(!myCloud){
+  //   return next(new ErrorHandler(500, 'Cloud Not Supported'));
+  // }
 
-  if(!myCloud){
-    return next(new ErrorHandler(500, 'Cloud Not Supported'));
-  }
-
-  // console.log('hello 2');
   const { name, email, password } = req.body;
   const user = await userModel.create({
     name,
@@ -191,6 +188,24 @@ exports.updateUserProfile = catchAsyncError(async (req, res, next) => {
     name: req.body.name,
     email: req.body.email,
   };
+
+  // if (req.body.avatar !== "") {
+  //   const user = await User.findById(req.user.id);
+  //   const imageId = user.avatar.public_id;
+
+  //   await cloudinary.v2.uploader.destroy(imageId);
+
+  //   const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+  //     folder: "avatars",
+  //     width: 150,
+  //     crop: "scale",
+  //   });
+
+  //   newData.avatar = {
+  //     public_id: myCloud.public_id,
+  //     url: myCloud.secure_url,
+  //   };
+  // }
 
   const user = await userModel.findByIdAndUpdate(req.user.id, newData, {
     new: true,

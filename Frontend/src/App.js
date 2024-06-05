@@ -9,9 +9,11 @@ import ProductDetails from './components/Product/ProductDetails';
 import Products from './components/Product/Products';
 import Search from './components/Product/Search';
 import LoginSignUp from './components/User/LoginSignUp';
+import Profile from "./components/User/Profile"
 import store from "./store"
 import {loadUser} from "./actions/userAction"
 import UserOptions from './components/Layout/Header/UserOptions';
+import UpdateProfile from "./components/User/UpdateProfile";
 import { useSelector } from 'react-redux';
 
 
@@ -40,6 +42,8 @@ function App() {
         <Route exact path='/products/:keyword' element={ <Products/>}/>
         <Route exact path='/search' element={ <Search/>}/>
         <Route exact path='/login' element={ <LoginSignUp/>}/>
+        <Route exact path='/account' element={ <Profile/>}/>
+        <Route exact path='/me/update' element={ <UpdateProfile/>}/>
       </Routes>
       <Footer />
     </Router>

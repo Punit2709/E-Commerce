@@ -14,7 +14,7 @@ const LoginSignUp = ({ history, location }) => {
   const alert = useAlert();
   history = useNavigate();
 
-  const { error, loading, isAuthenticated } = useSelector(
+  const { error, loading, isAuthenticated} = useSelector(
     (state) => state.user
   );
 
@@ -38,7 +38,6 @@ const LoginSignUp = ({ history, location }) => {
 
   const loginSubmit = (e) => {
     e.preventDefault();
-    // console.log('Login: Form Submitted')
     dispatch(login(loginEmail, loginPassword));
   };
 
@@ -51,7 +50,6 @@ const LoginSignUp = ({ history, location }) => {
     myForm.set("email", email);
     myForm.set("password", password);
     myForm.set("avatar", avatar);
-    // console.log('Register: Form Submitted')
     dispatch(register(myForm));
   };
 
@@ -79,12 +77,11 @@ const LoginSignUp = ({ history, location }) => {
       alert.error(error);
       dispatch(clearErrors());
     }
-  
 
     if (isAuthenticated) {
       history('/account');
     }
-  }, [dispatch, error, alert, isAuthenticated ]);
+  }, [user, dispatch, error, alert, isAuthenticated]);
 
   const switchTabs = (e, tab) => {
     if (tab === "login") {

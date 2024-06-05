@@ -51,11 +51,13 @@ const UserOptions = ({ user }) => {
   }
   function logoutUser() {
     dispatch(logout());
+    history("/");
     alert.success("Logout Successfully");
   }
 
   return (
     <Fragment>
+      <Backdrop open={open} style={{ zIndex: "10" }} />
       <SpeedDial
         ariaLabel="SpeedDial tooltip example"
         onClose={() => setOpen(false)}
@@ -64,13 +66,14 @@ const UserOptions = ({ user }) => {
         open={open}
         direction="down"
         className="speedDial"
-        icon={
-          <img
-            className="speedDialIcon"
-            src={user.avatar.url ? user.avatar.url : `${profileIcon}`}
-            alt="Profile"
-          />
-        }
+        icon={<PersonIcon/>}
+        // icon={
+          // <img
+          //   className="speedDialIcon"
+          //   // src={user.avatar.url ? user.avatar.url : `${profileIcon}`}
+          //   alt="Profile"
+          // />
+        // }
       >
         {options.map((item) => (
           <SpeedDialAction
