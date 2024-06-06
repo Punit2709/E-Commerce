@@ -8,7 +8,6 @@ import "./Profile.css";
 const Profile = () => {
   let history = useNavigate();
   const { user, loading, isAuthenticated } = useSelector((state) => state.user);
-  console.log(isAuthenticated);
   
   useEffect(() => {
     if (isAuthenticated === false) {
@@ -16,7 +15,6 @@ const Profile = () => {
     }
   }, [history, isAuthenticated]);
 
-  console.log(user);
   return (
     <Fragment>
       {loading ? (

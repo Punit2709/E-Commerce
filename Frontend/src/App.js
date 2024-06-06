@@ -14,6 +14,9 @@ import store from "./store"
 import {loadUser} from "./actions/userAction"
 import UserOptions from './components/Layout/Header/UserOptions';
 import UpdateProfile from "./components/User/UpdateProfile";
+import UpdatePassword from './components/User/UpdatePassword';
+import ForgotPassword from './components/User/ForgotPassword';
+import ResetPassword from './components/User/ResetPassword';
 import { useSelector } from 'react-redux';
 
 
@@ -44,6 +47,9 @@ function App() {
         <Route exact path='/login' element={ <LoginSignUp/>}/>
         <Route exact path='/account' element={ <Profile/>}/>
         <Route exact path='/me/update' element={ <UpdateProfile/>}/>
+        <Route exact path='/password/update' element={ <UpdatePassword/>}/>
+        <Route exact path='/password/forgot' element={ <ForgotPassword/>}/>
+        <Route exact path='/password/reset/:token' element={ <ResetPassword/>}/>
       </Routes>
       <Footer />
     </Router>

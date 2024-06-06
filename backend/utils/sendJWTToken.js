@@ -13,7 +13,8 @@ const sendJWTToken = (user, statusCode, message, res) =>{
     res.status(statusCode).cookie("token", token, options).json({
       success: true,
       message, 
-      token
+      token,
+      user
     });
 }
 

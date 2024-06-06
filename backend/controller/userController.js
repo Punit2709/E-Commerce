@@ -45,8 +45,6 @@ exports.loginUser = catchAsyncError(async (req, res, next) => {
   // check for user exsist or not
   const user = await userModel.findOne({ email }).select("+password"); // provide password also
   if (!user) {
-    console.log(user);
-    console.log('check 2')
     return next(new ErrorHandler(401, "Invalid Email or Password"));
   }
 
@@ -125,11 +123,12 @@ exports.resetPassword = catchAsyncError(async (req, res, next) => {
     .createHash("sha256")
     .update(req.params.token)
     .digest("hex");
-
+  
   const user = await userModel.findOne({
     resetPasswordToken,
     resetPasswordExpire: { $gt: Date.now() },
   });
+
 
   if (!user) {
     return next(new ErrorHandler(401, "Invalid Email or Password"));
