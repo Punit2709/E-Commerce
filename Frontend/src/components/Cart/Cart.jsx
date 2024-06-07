@@ -8,9 +8,10 @@ import RemoveShoppingCartIcon from "@material-ui/icons/RemoveShoppingCart";
 import { Link, useNavigate } from "react-router-dom";
 
 const Cart = () => {
-   let history = useNavigate(); 
+  let history = useNavigate();
   const dispatch = useDispatch();
   const { cartItems } = useSelector((state) => state.cart);
+  const { isAuthenticated } = useSelector((state) => state.user);
 
   const increaseQuantity = (id, quantity, stock) => {
     const newQty = quantity + 1;
@@ -33,7 +34,8 @@ const Cart = () => {
   };
 
   const checkoutHandler = () => {
-    history("/login?redirect=shipping");
+    if (!isAuthenticated) history("/login");
+    else history("/shipping");
   };
 
   return (

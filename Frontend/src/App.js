@@ -12,12 +12,13 @@ import LoginSignUp from './components/User/LoginSignUp';
 import Profile from "./components/User/Profile"
 import store from "./store"
 import {loadUser} from "./actions/userAction"
-import UserOptions from './components/Layout/Header/UserOptions';
 import UpdateProfile from "./components/User/UpdateProfile";
 import UpdatePassword from './components/User/UpdatePassword';
 import ForgotPassword from './components/User/ForgotPassword';
 import ResetPassword from './components/User/ResetPassword';
 import Cart from './components/Cart/Cart'
+import Shipping from './components/Cart/Shipping'
+import ConfirmOrder from './components/Cart/ConfirmOrder'
 import { useSelector } from 'react-redux';
 
 
@@ -52,6 +53,8 @@ function App() {
         <Route exact path='/password/forgot' element={ <ForgotPassword/>}/>
         <Route exact path='/password/reset/:token' element={ <ResetPassword/>}/>
         <Route exact path='/cart' element={ <Cart/>}/>
+        <Route exact path='/shipping' element={ <Shipping/>}/>
+        <Route exact path='/order/confirm' element={ <ConfirmOrder/>}/>
       </Routes>
       <Footer />
     </Router>
