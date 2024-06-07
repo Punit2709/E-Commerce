@@ -5,6 +5,7 @@ import ReactStars from "react-rating-stars-component";
 import "./ProductDetails.css";
 import { useSelector, useDispatch } from "react-redux";
 import { clearErrors, getProductDetails } from "../../actions/productAction";
+import { addItemsToCart } from "../../actions/cartAction";
 import ReviewCard from "./ReviewCard";
 import Loader from "../Layout/Loader/Loader";
 import {useAlert} from "react-alert"
@@ -51,6 +52,11 @@ const ProductDetails = () => {
     size: window.innerWidth < 600 ? 20 : 25,
   };
 
+  const addToCart = () => {
+    dispatch(addItemsToCart(id, quantity));
+    alert.success("Item Added To Cart");
+  }
+
   return (
     <Fragment>
       {loading ? (
@@ -91,7 +97,7 @@ const ProductDetails = () => {
                     <input readOnly value={quantity} type="number" min={1} />
                     <button onClick={increaseQuantity}>+</button>
                   </div>
-                  <button className="add-to-cart">Add to Cart</button>
+                  <button className="add-to-cart" onClick={addToCart}>Add to Cart</button>
                 </div>
                 <p>
                   Status:
