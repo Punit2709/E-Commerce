@@ -7,6 +7,11 @@ import {
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
 
+  NEW_REVIEW_REQUEST, 
+  NEW_REVIEW_SUCCESS, 
+  NEW_REVIEW_FAIL, 
+  NEW_REVIEW_RESET,
+
   CLEAR_ERRORS,
 } from "../constants/productConstant";
 
@@ -74,3 +79,4 @@ export const productDetailsReducer = (state = { product: {} }, action) => {
       return state;
   }
 };
+

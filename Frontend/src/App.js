@@ -1,28 +1,38 @@
 import './App.css';
+import axios from 'axios';
+import WebFont from 'webfontloader'
+import { useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom'
+
 import Header from './components/Layout/Header/Header'
 import Footer from './components/Layout/Footer/Footer'
-import WebFont from 'webfontloader'
+
 import Home from './components/Home/Home';
+
 import ProductDetails from './components/Product/ProductDetails';
 import Products from './components/Product/Products';
 import Search from './components/Product/Search';
+
 import LoginSignUp from './components/User/LoginSignUp';
 import Profile from "./components/User/Profile"
-import store from "./store"
-import { loadUser } from "./actions/userAction"
 import UpdateProfile from "./components/User/UpdateProfile";
 import UpdatePassword from './components/User/UpdatePassword';
 import ForgotPassword from './components/User/ForgotPassword';
 import ResetPassword from './components/User/ResetPassword';
+
+import store from "./store"
+import { loadUser } from "./actions/userAction"
+
 import Cart from './components/Cart/Cart'
 import Shipping from './components/Cart/Shipping'
 import ConfirmOrder from './components/Cart/ConfirmOrder'
 import OrderSuccess from "./components/Cart/OrderSuccess";
 import Pay from './components/Cart/Pay'
-import { useSelector } from 'react-redux';
-import axios from 'axios';
+
+import MyOrders from './components/Order/MyOrders';
+import OrderDetails from './components/Order/OrderDetails';
+
 
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
@@ -73,6 +83,8 @@ function App() {
         <Route exact path='/order/confirm' element={<ConfirmOrder />} />
         <Route exact path='/process/payment' element={<Pay />} />
         <Route exact path='/success' element={<OrderSuccess />} />
+        <Route exact path='/orders' element={<MyOrders />} />
+        <Route exact path='/order/:id' element={<OrderDetails />} />
       </Routes>
       <Footer />
     </Router>

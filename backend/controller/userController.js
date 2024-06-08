@@ -4,12 +4,12 @@ const catchAsyncError = require("../middleware/catchAsyncError");
 const sendJWTToken = require("../utils/sendJWTToken");
 const sendEmail = require("../utils/sendEmail");
 const crypto = require("crypto");
-const cloudinary = require("cloudinary");
+const cloudinary = require("cloudinary").v2;
 
 // register a user
 exports.registerUser = catchAsyncError(async (req, res, next) => {
 
-  // const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
+  // const myCloud = await cloudinary.uploader.upload(req.body.avatar, {
   //   folder: "avatars",
   //   width: 150,
   //   crop: "scale",
@@ -19,14 +19,15 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
   //   return next(new ErrorHandler(500, 'Cloud Not Supported'));
   // }
 
+  console.log('Req Arrived');
   const { name, email, password } = req.body;
   const user = await userModel.create({
     name,
     email,
     password,
     avatar: {
-      public_id: myCloud.public_id,
-      url: myCloud.secure_url,
+      public_id: "Sample ID",
+      url:"Sample URL",
     },
   });
 
