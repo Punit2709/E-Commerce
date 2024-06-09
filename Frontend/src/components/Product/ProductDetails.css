@@ -58,9 +58,9 @@ body {
   padding: 1rem 0;
 }
 
-.detailsBlock-2 > span {
+.detailsBlock-2-span {
   font-weight: 200;
-  font-size: 0.8rem;
+  font-size: 0.8vmax;
   color: #000000b3;
 }
 
@@ -158,6 +158,19 @@ body {
 .submitReview:hover {
   background-color: #c5442d;
   transform: scale(1.1);
+}
+
+
+.submitDialog {
+  display: flex;
+  flex-direction: column;
+}
+.submitDialogTextArea {
+  border: 1px solid rgba(0, 0, 0, 0.082);
+  margin: 1vmax 0;
+  outline: none;
+  padding: 1rem;
+  font: 300 1rem "Roboto";
 }
 
 /* Review Card Styles */

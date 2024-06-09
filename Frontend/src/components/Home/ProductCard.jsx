@@ -1,15 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import ReactStarts from "react-rating-stars-component";
+import { Rating } from "@material-ui/lab";
 
 const ProductCard = ({ product }) => {
   const options = {
-    edit: false, 
-    activeColor: 'tomato', 
-    isHalf: true, 
-    value:product.rating,
+    value: product.rating,
     readOnly: true,
-    size: window.size < 600 ? 20 : 25, 
+    precision: 0.5
   };
 
   return (
@@ -17,7 +15,7 @@ const ProductCard = ({ product }) => {
       <img src={product.images[0].url} alt={product.name} />
       <p>{product.name}</p>
       <div>
-        <ReactStarts {...options} />{" "}
+        <Rating {...options} />{" "}
         <span className="productCardSpan">
           {" "}
           ({product.numOfReviews} Reviews)
