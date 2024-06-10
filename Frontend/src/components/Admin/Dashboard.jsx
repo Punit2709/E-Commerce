@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import Sidebar from './Sidebar'
 import MetaData from '../Layout/MetaData';
 import './Dashboard.css'
@@ -7,17 +7,38 @@ import { Link, useNavigate } from "react-router-dom";
 import { Doughnut, Line } from "react-chartjs-2";
 
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement } from 'chart.js';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAdminProducts } from '../../actions/productAction';
 
 // Register the components you need
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, ArcElement);
 
 function Dashboard() {
     const navigate = useNavigate();
-    const {role} = useSelector(state => state.user);
-    if(role !== 'admin'){
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+      dispatch(getAdminProducts())
+  }, [dispatch])
+
+  const {products, error} = useSelector(state => state.products);
+  
+  const {user} = useSelector(state => state.user);
+    if(user.role !== 'admin'){
       navigate('/account');
     }
+
+    let outOfStock = 0;
+    let inStock = 0;
+    products && products.forEach((item) => {
+      if(item.Stock == 0){
+        outOfStock += 1;
+      }else{
+        inStock += 1;
+      }
+      console.log('Out: ' + outOfStock);
+      console.log('In: ' + inStock);
+    })
 
     const lineState = {
         labels: ["Initial Amount", "Amount Earned"],
@@ -37,7 +58,7 @@ function Dashboard() {
           {
             backgroundColor: ["#00A6B4", "#6800B4"],
             hoverBackgroundColor: ["#4B5000", "#35014F"],
-            data: [2, 10],
+            data: [Number(outOfStock), Number(inStock)],
           },
         ],
       };
@@ -58,10 +79,8 @@ function Dashboard() {
               </div>
               <div className="dashboardSummaryBox2">
                 <Link to="/admin/products">
-                  <p>Product</p>
-
-                {/* //   <p>{products && products.length}</p> */}
-                <p>50</p>
+                <p>Product</p>
+                <p>{products && products.length}</p>
                 </Link>
                 <Link to="/admin/orders">
                   <p>Orders</p>

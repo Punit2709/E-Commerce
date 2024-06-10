@@ -3,11 +3,36 @@ const ErrorHandler = require("../utils/errorHandler");
 const catchAsyncError = require("../middleware/catchAsyncError");
 const ApiFeatures = require("../utils/apiFeature");
 const { contains } = require("validator");
+const cloudinary = require('cloudinary').v2;
 
 // creating Product : Admin
 exports.createProduct = catchAsyncError(async (req, res, next) => {
-  req.body.user = req.user.id;
 
+  let images = [];
+  let imagesLink = [];
+
+  if(typeof req.body.images === 'string'){  
+    // type is String that means only single Image is there
+    images.push(req.body.images);
+
+  }else{
+    // type is Array that means only multi Image is there
+    images = req.body.images;
+  }
+
+  for (let index = 0; index < images.length; index++) { 
+    const result = await cloudinary.uploader.upload(images[index], {
+      folder: 'products',
+    });
+
+    imagesLink.push({
+      public_id: result.public_id, 
+      url: result.secure_url,
+    })
+  }
+
+  req.body.images = imagesLink;
+  req.body.user = req.user.id;
   const product = await Product.create(req.body);
   res.status(200).json({ message: "Product Created", success: true, product });
 });
@@ -31,11 +56,19 @@ exports.updateProduct = catchAsyncError(async (req, res, next) => {
 
 // delete product : Admin
 exports.deleteProduct = catchAsyncError(async (req, res, next) => {
+  console.log(req.params);
   const product = await Product.findById(req.params.id);
+  console.log(product);
 
   if (!product) {
     return next(new ErrorHandler(404, "Product Found"));
   }
+
+  // deleting images from cloudinary
+  for(let i = 0; i < product.images.length; i++){
+    await cloudinary.uploader.destroy(product.images[i].public_id);
+  }
+
 
   // deleting product
   await Product.deleteOne({ _id: req.params.id });
@@ -183,3 +216,17 @@ exports.deleteReview = catchAsyncError(async (req, res, next) => {
     message: "Review Deleted",
   });
 });
+
+// Admin Products
+exports.getAdminProducts = catchAsyncError(async (req, res, next) => {
+
+  const products = await Product.find();
+
+  res
+    .status(200)
+    .json({
+      success: true,
+      products,
+    });
+});
+

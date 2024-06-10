@@ -22,6 +22,8 @@ import ForgotPassword from './components/User/ForgotPassword';
 import ResetPassword from './components/User/ResetPassword';
 
 import Dashboard from './components/Admin/Dashboard'
+import ProductList from './components/Admin/ProductList'
+import NewProduct from './components/Admin/NewProduct';
 
 import store from "./store"
 import { loadUser } from "./actions/userAction"
@@ -88,7 +90,8 @@ function App() {
         <Route exact path='/orders' element={<MyOrders />} />
         <Route exact path='/order/:id' element={<OrderDetails />} />
         <Route exact path='/admin/dashboard' element={<Dashboard />} />
-        <Route exact path='/admin/products' element={<Dashboard />} />
+        <Route exact path='/admin/products' element={<ProductList />} />
+        <Route exact path='/admin/product' element={<NewProduct />} />
       </Routes>
       <Footer />
     </Router>

@@ -4,12 +4,27 @@ import {
   ALL_PRODUCT_REQUEST,
   ALL_PRODUCT_SUCCESS,
   ALL_PRODUCT_FAIL,
+
   PRODUCT_DETAILS_REQUEST,
   PRODUCT_DETAILS_SUCCESS,
   PRODUCT_DETAILS_FAIL,
+
   NEW_REVIEW_REQUEST,
   NEW_REVIEW_SUCCESS,
   NEW_REVIEW_FAIL,
+
+  ADMIN_PRODUCT_REQUEST, 
+  ADMIN_PRODUCT_SUCCESS, 
+  ADMIN_PRODUCT_FAIL,
+
+  NEW_PRODUCT_REQUEST, 
+  NEW_PRODUCT_SUCCESS,
+  NEW_PRODUCT_FAIL,
+
+  DELETE_PRODUCT_REQUEST, 
+  DELETE_PRODUCT_SUCCESS,
+  DELETE_PRODUCT_FAIL,
+
   CLEAR_ERRORS,
 } from "../constants/productConstant";
 
@@ -38,7 +53,8 @@ export const getProduct =
   };
 
 // spesific product details
-export const getProductDetails = (id) => async (dispatch) => {
+export const getProductDetails =
+ (id) => async (dispatch) => {
   try {
     dispatch({ type: PRODUCT_DETAILS_REQUEST });
     const data = await axios.get(`/api/v1/products/details/${id}`);
@@ -56,7 +72,8 @@ export const getProductDetails = (id) => async (dispatch) => {
 };
 
 // new Review
-export const newReview = (reviewData) => async (dispatch) => {
+export const newReview = 
+(reviewData) => async (dispatch) => {
   try {
     dispatch({ type: NEW_REVIEW_REQUEST });
   
@@ -83,8 +100,75 @@ export const newReview = (reviewData) => async (dispatch) => {
 };
 
 // clear error
-export const clearErrors = () => async (dispatch) => {
+export const clearErrors = 
+() => async (dispatch) => {
   dispatch({
     type: CLEAR_ERRORS,
   });
 };
+
+export const getAdminProducts = 
+() => async (dispatch) => {
+  try {
+    dispatch({type: ADMIN_PRODUCT_REQUEST})
+
+    const {data} = await axios.get(`/api/v1/admin/products`);
+    console.log('Admin Products: ');
+    dispatch({type: ADMIN_PRODUCT_SUCCESS, payload: data.products})
+  } catch (error) {
+    dispatch({
+      type: ADMIN_PRODUCT_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+}
+
+export const createProduct = 
+(productData) => async (dispatch) => {
+  try {
+    dispatch({ type: NEW_PRODUCT_REQUEST });
+
+    const config = {
+      headers: { "Content-Type": "application/json" },
+    };
+
+    console.log('Dispatching');
+    const { data } = await axios.post(
+      `/api/v1/admin/products/create`,
+      productData,
+      config
+    );
+
+    console.log(data);
+
+    dispatch({
+      type: NEW_PRODUCT_SUCCESS,
+      payload: data,
+    });
+  } catch (error) {
+    dispatch({
+      type: NEW_PRODUCT_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+export const deleteProduct = (id) => async (dispatch) => {
+    try {
+      dispatch({type : DELETE_PRODUCT_REQUEST });
+
+      console.log('Delete Dispatch');
+      const data = await axios.delete(`/api/v1/admin/products/delete/${id}`);
+
+      dispatch({
+        type: DELETE_PRODUCT_SUCCESS, 
+        payload: data.success
+      });
+
+    } catch (error) {
+      dispatch({
+        type: DELETE_PRODUCT_FAIL,
+        payload: error.response.data.message,
+      });
+    }
+}

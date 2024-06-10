@@ -9,15 +9,15 @@ const cloudinary = require("cloudinary").v2;
 // register a user
 exports.registerUser = catchAsyncError(async (req, res, next) => {
 
-  // const myCloud = await cloudinary.uploader.upload(req.body.avatar, {
-  //   folder: "avatars",
-  //   width: 150,
-  //   crop: "scale",
-  // });
+  const myCloud = await cloudinary.uploader.upload(req.body.avatar, {
+    folder: "avatars",
+    width: 150,
+    crop: "scale",
+  });
 
-  // if(!myCloud){
-  //   return next(new ErrorHandler(500, 'Cloud Not Supported'));
-  // }
+  if(!myCloud){
+    return next(new ErrorHandler(500, 'Cloud Not Supported'));
+  }
 
   console.log('Req Arrived');
   const { name, email, password } = req.body;
@@ -26,8 +26,8 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
     email,
     password,
     avatar: {
-      public_id: "Sample ID",
-      url:"Sample URL",
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
     },
   });
 
