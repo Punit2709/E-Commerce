@@ -1,43 +1,33 @@
 import React, { Fragment, useEffect } from "react";
-import { DataGrid } from "@material-ui/data-grid";
 import "./ProductList.css";
 import { useSelector, useDispatch } from "react-redux";
-import {
-  clearErrors,
-  getAdminProducts,
-  deleteProduct,
-} from "../../actions/productAction";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
 import MetaData from "../Layout/MetaData";
+import { DataGrid } from "@material-ui/data-grid";
 import { Button } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SideBar from "./Sidebar";
-// import { DELETE_PRODUCT_RESET } from "../../constants/productConstants";
+import {
+    deleteOrder,
+    getAllOrders,
+    clearErrors
+} from "../../actions/orderAction";
 
-const ProductList = () => {
-  const navigate = useNavigate();
+import { DELETE_ORDER_RESET } from "../../constants/orderConstants";
+
+const OrderList = () => {
   const dispatch = useDispatch();
-
   const alert = useAlert();
+  const navigate = useNavigate();
 
-  const { error, products } = useSelector((state) => state.products);
-  const { user } = useSelector((state) => state.user);
+  const { error, orders } = useSelector((state) => state.allOrders);
 
-  if(user.role !== 'admin'){
-    console.log(user);
-    navigate('/account');
-  }
+  const { error: deleteError, isDeleted } = useSelector((state) => state.order);
 
-
-  // updProduct : Updated Product
-  const { error: deleteError, isDeleted } = useSelector(
-    (state) => state.updProduct
-  );
-
-  const deleteProductHandler = (id) => {
-    dispatch(deleteProduct(id));
+  const deleteOrderHandler = (id) => {
+    dispatch(deleteOrder(id));
   };
 
   useEffect(() => {
@@ -52,34 +42,39 @@ const ProductList = () => {
     }
 
     if (isDeleted) {
-      alert.success("Product Deleted Successfully");
-      navigate("/admin/dashboard");
-      dispatch({ type: DELETE_PRODUCT_RESET });
+      alert.success("Order Deleted Successfully");
+      navigate("/admin/orders");
+      dispatch({ type: DELETE_ORDER_RESET });
     }
 
-    dispatch(getAdminProducts());
+    dispatch(getAllOrders());
   }, [dispatch, alert, error, deleteError, navigate, isDeleted]);
 
   const columns = [
-    { field: "id", headerName: "Product ID", minWidth: 200, flex: 0.5 },
+    { field: "id", headerName: "Order ID", minWidth: 300, flex: 1 },
 
     {
-      field: "name",
-      headerName: "Name",
-      minWidth: 350,
-      flex: 1,
+      field: "status",
+      headerName: "Status",
+      minWidth: 150,
+      flex: 0.5,
+      cellClassName: (params) => {
+        return params.getValue(params.id, "status") === "Delivered"
+          ? "greenColor"
+          : "redColor";
+      },
     },
     {
-      field: "stock",
-      headerName: "Stock",
+      field: "itemsQty",
+      headerName: "Items Qty",
       type: "number",
       minWidth: 150,
-      flex: 0.3,
+      flex: 0.4,
     },
 
     {
-      field: "price",
-      headerName: "Price",
+      field: "amount",
+      headerName: "Amount",
       type: "number",
       minWidth: 270,
       flex: 0.5,
@@ -93,17 +88,16 @@ const ProductList = () => {
       type: "number",
       sortable: false,
       renderCell: (params) => {
-        console.log(params);
-        const id =  params.id;
+        const id = params.id;
         return (
           <Fragment>
-            <Link to={`/admin/product/${id}`}>
+            <Link to={`/admin/order/${id}`}>
               <EditIcon />
             </Link>
 
             <Button
               onClick={() =>
-                deleteProductHandler(id)
+                deleteOrderHandler(id)
               }
             >
               <DeleteIcon />
@@ -116,24 +110,24 @@ const ProductList = () => {
 
   const rows = [];
 
-  products &&
-    products.forEach((item) => {
+  orders &&
+    orders.forEach((item) => {
       rows.push({
         id: item._id,
-        stock: item.Stock,
-        price: item.price,
-        name: item.name,
+        itemsQty: item.orderItems.length,
+        amount: item.totalPrice,
+        status: item.orderStatus,
       });
     });
 
   return (
     <Fragment>
-      <MetaData title={`ALL PRODUCTS - Admin`} />
+      <MetaData title={`ALL ORDERS - Admin`} />
 
       <div className="dashboard">
         <SideBar />
         <div className="productListContainer">
-          <h1 id="productListHeading">ALL PRODUCTS</h1>
+          <h1 id="productListHeading">ALL ORDERS</h1>
 
           <DataGrid
             rows={rows}
@@ -149,4 +143,4 @@ const ProductList = () => {
   );
 };
 
-export default ProductList;
+export default OrderList;

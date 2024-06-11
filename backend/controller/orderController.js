@@ -47,7 +47,6 @@ exports.getSingleOrders = catchAsyncError(async (req, res, next) => {
     })
 })
 
-
 // get Loogin User Orders
 exports.myOrders = catchAsyncError(async (req, res, next) => {
     const orders = await Order.find({ user: req.user._id });
