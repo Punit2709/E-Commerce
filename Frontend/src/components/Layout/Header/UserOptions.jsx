@@ -9,13 +9,13 @@ import ListAltIcon from "@material-ui/icons/ListAlt";
 import HomeIcon from "@material-ui/icons/Home";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { useNavigate} from "react-router-dom";
-import {useDispatch} from "react-redux"
+import {useDispatch, useSelector} from "react-redux"
 import {logout} from "../../../actions/userAction"
 import {useAlert} from "react-alert"
 
 
 const UserOptions = ({ user }) => {
-//   const { cartItems } = useSelector((state) => state.cart);
+  const { cartItems } = useSelector((state) => state.cart);
 
   const [open, setOpen] = useState(false);
   const navigate = useNavigate();
@@ -72,14 +72,14 @@ const UserOptions = ({ user }) => {
         open={open}
         direction="down"
         className="speedDial"
-        icon={<PersonIcon/>}
-        // icon={
-          // <img
-          //   className="speedDialIcon"
-          //   // src={user.avatar.url ? user.avatar.url : `${profileIcon}`}
-          //   alt="Profile"
-          // />
-        // }
+        // icon={<PersonIcon/>}
+        icon={
+          <img
+            className="speedDialIcon"
+            src={user.avatar.url ? user.avatar.url : `${profileIcon}`}
+            alt="Profile"
+          />
+        }
       >
         {options.map((item) => (
           <SpeedDialAction

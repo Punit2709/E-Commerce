@@ -23,6 +23,7 @@ function Dashboard() {
 
   const {products, error} = useSelector(state => state.products);
   const { orders } = useSelector(state => state.allOrders);
+  const { users } = useSelector(state => state.allUsers);
   
   const {user} = useSelector(state => state.user);
     if(user.role !== 'admin'){
@@ -89,8 +90,7 @@ function Dashboard() {
                 </Link>
                 <Link to="/admin/users">
                   <p>Users</p>
-                  {/* <p>{users && users.length}</p> */}
-                  <p> 2</p>
+                  <p>{users && users.length}</p>
                 </Link>
               </div>
             </div>

@@ -14,8 +14,6 @@ exports.registerUser = catchAsyncError(async (req, res, next) => {
     crop: "scale",
   });
 
-  console.log(myCloud);
-
   if(!myCloud){
     return next(new ErrorHandler(500, 'Cloud Not Supported'));
   }
@@ -276,6 +274,10 @@ exports.deleteUser = catchAsyncError(async (req, res, next) => {
   if (!user) {
     return next(new ErrorHandler(400, "User Not Found"));
   }
+
+  const imageId = user.avatar.public_id;
+
+  await cloudinary.uploader.destroy(imageId);
 
   res.status(200).json({
     success: true,
