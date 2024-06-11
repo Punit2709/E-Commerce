@@ -27,6 +27,7 @@ import NewProduct from './components/Admin/NewProduct';
 import UpdateProduct from './components/Admin/UpdateProduct';
 import OrderList from './components/Admin/OrderList';
 import ProcessOrder from './components/Admin/ProcessOrder';
+import UsersList from './components/Admin/UsersList';
 
 import store from "./store"
 import { loadUser } from "./actions/userAction"
@@ -40,12 +41,6 @@ import Pay from './components/Cart/Pay'
 import MyOrders from './components/Order/MyOrders';
 import OrderDetails from './components/Order/OrderDetails';
 
-
-import { Elements } from "@stripe/react-stripe-js";
-import { loadStripe } from "@stripe/stripe-js";
-
-
-
 function App() {
 
   const { isAuthenticated, user } = useSelector(state => state.user);
@@ -54,7 +49,7 @@ function App() {
 
   async function getStripeApiKey() {
     const { data } = await axios.get("/api/v1/stripeapikey");
-
+    console.log(data);
     setStripeApiKey(data.stripeApiKey);
   }
 
@@ -69,6 +64,7 @@ function App() {
     getStripeApiKey();
   }, []);
 
+  console.log(stripeApiKey);
   return (
     <Router>
       <Header />
@@ -87,17 +83,19 @@ function App() {
         <Route exact path='/password/reset/:token' element={<ResetPassword />} />
         <Route exact path='/cart' element={<Cart />} />
         <Route exact path='/shipping' element={<Shipping />} />
-        <Route exact path='/order/confirm' element={<ConfirmOrder />} />
         <Route exact path='/process/payment' element={<Pay />} />
         <Route exact path='/success' element={<OrderSuccess />} />
         <Route exact path='/orders' element={<MyOrders />} />
         <Route exact path='/order/:id' element={<OrderDetails />} />
+        <Route exact path='/order/confirm' element={<ConfirmOrder />} />
+
         <Route exact path='/admin/dashboard' element={<Dashboard />} />
         <Route exact path='/admin/products' element={<ProductList />} />
         <Route exact path='/admin/product' element={<NewProduct />} />
         <Route exact path='/admin/product/:id' element={<UpdateProduct />} />
         <Route exact path='/admin/orders' element={<OrderList />} />
         <Route exact path='/admin/order/:id' element={<ProcessOrder />} />
+        <Route exact path='/admin/users' element={<UsersList />} />
       </Routes>
       <Footer />
     </Router>

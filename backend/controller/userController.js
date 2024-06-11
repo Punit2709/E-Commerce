@@ -8,19 +8,21 @@ const cloudinary = require("cloudinary").v2;
 
 // register a user
 exports.registerUser = catchAsyncError(async (req, res, next) => {
-
   const myCloud = await cloudinary.uploader.upload(req.body.avatar, {
     folder: "avatars",
     width: 150,
     crop: "scale",
   });
 
+  console.log(myCloud);
+
   if(!myCloud){
     return next(new ErrorHandler(500, 'Cloud Not Supported'));
   }
 
-  console.log('Req Arrived');
+  console.log('Req Arrived 2');
   const { name, email, password } = req.body;
+  
   const user = await userModel.create({
     name,
     email,
@@ -56,7 +58,7 @@ exports.loginUser = catchAsyncError(async (req, res, next) => {
   if (!isPasswordMatched) {
     return next(new ErrorHandler(401, "Invalid Email or Password"));
   }
-
+  console.log('logging in');
   sendJWTToken(user, 200, "User Logged In", res);
 });
 
@@ -67,6 +69,7 @@ exports.logoutUser = catchAsyncError(async (req, res, next) => {
     httpOnly: true,
   });
 
+  console.log('logging out');
   res.status(200).json({
     success: true,
     message: "User Logged Out Successfully",
@@ -189,23 +192,23 @@ exports.updateUserProfile = catchAsyncError(async (req, res, next) => {
     email: req.body.email,
   };
 
-  // if (req.body.avatar !== "") {
-  //   const user = await User.findById(req.user.id);
-  //   const imageId = user.avatar.public_id;
+  if (req.body.avatar !== "") {
+    const user = await userModel.findById(req.user.id);
+    const imageId = user.avatar.public_id;
 
-  //   await cloudinary.v2.uploader.destroy(imageId);
+    await cloudinary.uploader.destroy(imageId);
 
-  //   const myCloud = await cloudinary.v2.uploader.upload(req.body.avatar, {
-  //     folder: "avatars",
-  //     width: 150,
-  //     crop: "scale",
-  //   });
+    const myCloud = await cloudinary.uploader.upload(req.body.avatar, {
+      folder: "avatars",
+      width: 150,
+      crop: "scale",
+    });
 
-  //   newData.avatar = {
-  //     public_id: myCloud.public_id,
-  //     url: myCloud.secure_url,
-  //   };
-  // }
+    newData.avatar = {
+      public_id: myCloud.public_id,
+      url: myCloud.secure_url,
+    };
+  }
 
   const user = await userModel.findByIdAndUpdate(req.user.id, newData, {
     new: true,
