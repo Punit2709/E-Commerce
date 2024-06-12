@@ -198,7 +198,7 @@ exports.createProductReview = catchAsyncError(async (req, res, next) => {
 
 // get All reviews
 exports.getAllReviews = catchAsyncError(async (req, res, next) => {
-  const product = await Product.findById(req.query.productId);
+  const product = await Product.findById(req.query.id);
 
   if (!product) {
     return next(new ErrorHandler(404, "Product not Found"));
@@ -219,7 +219,7 @@ exports.deleteReview = catchAsyncError(async (req, res, next) => {
   }
 
   const reviews = product.reviews.filter(
-    (rev) => rev._id.toString() !== req.query.reviewId.toString()
+    (rev) => rev._id.toString() !== req.query.id.toString()
   );
 
   let sumRating = 0;
@@ -227,10 +227,16 @@ exports.deleteReview = catchAsyncError(async (req, res, next) => {
     sumRating += rev.rating;
   });
 
-  const rating = sumRating / reviews.length;
+  let rating = 0;
+  if(reviews.length === 0){
+    rating = 0;
+  }else{
+    rating = sumRating / reviews.length;
+  }
+
   const numOfReviews = reviews.length;
 
-  await Product.findByIdAndUpdate(
+  const udPro = await Product.findByIdAndUpdate(
     req.query.productId,
     {
       rating,

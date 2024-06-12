@@ -28,6 +28,8 @@ import UpdateProduct from './components/Admin/UpdateProduct';
 import OrderList from './components/Admin/OrderList';
 import ProcessOrder from './components/Admin/ProcessOrder';
 import UsersList from './components/Admin/UsersList';
+import UpdateUser from './components/Admin/UpdateUser';
+import ProductReviews from './components/Admin/ProductReviews';
 
 import store from "./store"
 import { loadUser } from "./actions/userAction"
@@ -48,9 +50,7 @@ function App() {
   const [stripeApiKey, setStripeApiKey] = useState("");
 
   async function getStripeApiKey() {
-    console.log('Stripe GET Check 1');
     const { data } = await axios.get("/api/v1/stripeapikey");
-    console.log(data);
     setStripeApiKey(data.stripeApiKey);
   }
 
@@ -65,7 +65,6 @@ function App() {
     getStripeApiKey();
   }, []);
 
-  console.log(stripeApiKey);
   return (
     <Router>
       <Header />
@@ -97,6 +96,8 @@ function App() {
         <Route exact path='/admin/orders' element={<OrderList />} />
         <Route exact path='/admin/order/:id' element={<ProcessOrder />} />
         <Route exact path='/admin/users' element={<UsersList />} />
+        <Route exact path='/admin/user/:id' element={<UpdateUser />} />
+        <Route exact path='/admin/reviews' element={<ProductReviews />} />
       </Routes>
       <Footer />
     </Router>
