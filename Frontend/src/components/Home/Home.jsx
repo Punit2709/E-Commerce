@@ -23,6 +23,9 @@ const Home = () => {
     dispatch(getProduct());
   }, [dispatch, error, alert]);
 
+  window.addEventListener("contextmenu", (e) => {
+    e.preventDefault();
+  })
   return (
     <Fragment>
       {loading ? (

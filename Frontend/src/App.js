@@ -42,6 +42,9 @@ import Pay from './components/Cart/Pay'
 
 import MyOrders from './components/Order/MyOrders';
 import OrderDetails from './components/Order/OrderDetails';
+import Contact from './components/Layout/Contanct/Contact';
+import About from './components/Layout/About/About';
+import NotFound from './components/Layout/NotFound/NotFound';
 
 function App() {
 
@@ -75,6 +78,8 @@ function App() {
         <Route exact path='/products' element={<Products />} />
         <Route exact path='/products/:keyword' element={<Products />} />
         <Route exact path='/search' element={<Search />} />
+        <Route exact path='/contact' element={<Contact />} />
+        <Route exact path='/about' element={<About />} />
         <Route exact path='/login' element={<LoginSignUp />} />
         <Route exact path='/account' element={<Profile />} />
         <Route exact path='/me/update' element={<UpdateProfile />} />
@@ -98,6 +103,7 @@ function App() {
         <Route exact path='/admin/users' element={<UsersList />} />
         <Route exact path='/admin/user/:id' element={<UpdateUser />} />
         <Route exact path='/admin/reviews' element={<ProductReviews />} />
+        <Route  path="*" element={<NotFound />} />
       </Routes>
       <Footer />
     </Router>

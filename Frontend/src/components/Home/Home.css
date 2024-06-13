@@ -4,6 +4,7 @@
     background-repeat: no-repeat;
     background-size: cover;
     height: 100vmin;
+    width: 100vw;
     display: flex;
     flex-direction: column;
     text-align: center;
@@ -134,5 +135,22 @@
     .productCard > div > span {
       margin: 0 0.5vmax;
       font: 300 1vmax "Roboto";
+    }
+  }
+
+  @media screen and (max-width: 400px) {
+    .banner {
+      background-image: url("../../images/cover.png");
+      background-position: center;
+      background-repeat: no-repeat;
+      background-size: cover;
+      height: 100vmin;
+      width: 100vw;
+      display: flex;
+      flex-direction: column;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      color: white;
     }
   }
